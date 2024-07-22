@@ -12,13 +12,13 @@ import org.testng.annotations.BeforeTest;
 
 public class BaseClassKey {
 
-	public  WebDriver driver;
+	public WebDriver driver;
 	public Properties p;
 
-	public  WebDriver setup(String browser) {
-		if(browser.equals("chrome")) {
+	public WebDriver setup(String browser) {
+		if (browser.equals("chrome")) {
 			driver = new ChromeDriver();
-		}else if(browser.equals("firefox")) {
+		} else if (browser.equals("firefox")) {
 			driver = new FirefoxDriver();
 		}
 		driver.manage().window().maximize();
