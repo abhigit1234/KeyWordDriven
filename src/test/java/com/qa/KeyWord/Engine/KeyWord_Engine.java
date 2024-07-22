@@ -32,7 +32,7 @@ public class KeyWord_Engine{
 	
 		FileInputStream fis=null;
 		try {
-			fis = new FileInputStream("C:\\Users\\abhil\\OneDrive\\Desktop\\key.xlsx");
+			fis = new FileInputStream(".//src/test/resources/key.xlsx");
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 			
