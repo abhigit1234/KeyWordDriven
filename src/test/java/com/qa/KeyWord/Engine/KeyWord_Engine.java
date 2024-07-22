@@ -1,108 +1,109 @@
 package com.qa.KeyWord.Engine;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.qa.BaseClass.BaseClassKey;
 
 public class KeyWord_Engine {
 
-	public WebDriver driver;
-	public Properties p;
-
 	public XSSFWorkbook wb;
 	public XSSFSheet sheet;
-	public BaseClassKey base;
+	public FileInputStream fis;
+	public Properties p;
+	public BaseClassKey b;
+	public WebDriver driver;
 	public WebElement ele;
-	public String locator;
+	public String LocatorName;
+	public String LocatorValue;
+	public String Action;
+	public String Value;
 
 	public void startExecution(String sheetName) {
-
-		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(".//src/test/resources/key.xlsx");
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
-
 		}
 		try {
 			wb = new XSSFWorkbook(fis);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
-
 		}
+
 		sheet = wb.getSheet(sheetName);
+
 		int row = sheet.getRow(0).getLastCellNum();
 		int j = 0;
 		for (int i = 0; i < row; i++) {
-			try {
-				String locatorName = null;
-				String locatorVal = null;
 
-				locator = sheet.getRow(i + 1).getCell(j + 1).toString();
-				if (!locator.equalsIgnoreCase("NA")) {
-					locatorName = locator.split("=")[0];
-					locatorVal = locator.split("=")[1];
+			LocatorName = sheet.getRow(i + 1).getCell(j + 1).toString().trim();
+			LocatorValue = sheet.getRow(i + 1).getCell(j + 2).toString().trim();
+			Action = sheet.getRow(i + 1).getCell(j + 3).toString().trim();
+			Value = sheet.getRow(i + 1).getCell(j + 4).toString().trim();
+
+			switch (Action) {
+			case "open browser":
+				b = new BaseClassKey();
+				b.initProp();
+				if (Value.isEmpty() || Value.equalsIgnoreCase("NA")) {
+					driver = b.setup(p.getProperty("browser"));
+				} else {
+					driver = b.setup(Value);
 				}
-				String Action = sheet.getRow(i + 1).getCell(j + 2).toString().trim();
-				String Value = sheet.getRow(i + 1).getCell(j + 3).toString().trim();
+				break;
 
-				switch (Action) {
-
-				case "open browser":
-
-					base = new BaseClassKey();
-					p = base.initProp();
-
-					if (Value.isEmpty() || Value.equals("NA")) {
-						driver = base.setup(p.getProperty("browser"));
-					} else {
-						driver = base.setup(Value);
-					}
-					break;
-				case "enter url":
+			case "enter url":
+				if (Value.isEmpty() || Value.equalsIgnoreCase("NA")) {
+					driver.get(p.getProperty("url"));
+				} else {
 					driver.get(Value);
-					break;
-				case "close":
-					driver.close();
-				default:
-
 				}
-				switch (locatorName) {
-				case "name":
-					ele = driver.findElement(By.name(locatorVal));
-					ele.clear();
-					ele.sendKeys(Value);
-					if (Action.equals("sendkeys")) {
-						ele.clear();
-						ele.sendKeys(Value);
-					} else if (Action.equals("click")) {
+				break;
+			case "close":
+				if (Value.equals("NA")) {
+					try {
 						Thread.sleep(2000);
-						ele.click();
+					} catch (InterruptedException e) {
+						System.out.println(e.getMessage());
 					}
-					break;
-				case "xpath":
-					ele = driver.findElement(By.xpath(locatorVal));
-					ele.click();
-					break;
-				default:
+					driver.close();
 					break;
 				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+			default:
+				break;
 			}
+			switch (LocatorName) {
+			case "name":
+				ele = driver.findElement(By.name(LocatorValue));
+
+				if (Action.equals("sendkeys")) {
+					ele.sendKeys(Value);
+				} else if (Action.equals("click")) {
+					ele.click();
+				}
+
+				break;
+			case "xpath":
+				ele = driver.findElement(By.xpath(LocatorValue));
+				ele.click();
+
+				break;
+			case "id":
+				ele = driver.findElement(By.id(LocatorValue));
+				ele.sendKeys(Value);
+
+			default:
+				break;
+			}
+
 		}
 
 	}
