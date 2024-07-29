@@ -16,7 +16,7 @@ public class KeyWord_Engine {
 
 	public XSSFWorkbook wb;
 	public XSSFSheet sheet;
-	public FileInputStream fis;
+	
 	public Properties p;
 	public BaseClassKey b;
 	public WebDriver driver;
@@ -27,6 +27,7 @@ public class KeyWord_Engine {
 	public String Value;
 
 	public void startExecution(String sheetName) {
+		 FileInputStream fis=null;
 		try {
 			fis = new FileInputStream(".//src/test/resources/key.xlsx");
 		} catch (Exception e) {
@@ -96,10 +97,7 @@ public class KeyWord_Engine {
 				ele.click();
 
 				break;
-			case "id":
-				ele = driver.findElement(By.id(LocatorValue));
-				ele.sendKeys(Value);
-
+			
 			default:
 				break;
 			}
