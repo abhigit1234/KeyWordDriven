@@ -5,7 +5,7 @@
     <classes>
       <class name="com.qa.TestMethod.TestMethodKey">
         <methods>
-          <include name="test"/>
+          <include name="startEngine"/>
         </methods>
       </class> <!-- com.qa.TestMethod.TestMethodKey -->
     </classes>

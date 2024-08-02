@@ -31,7 +31,7 @@ public class EngineKey {
 
 	public void readExcel(String sheetName) {
 		try {
-			fis = new FileInputStream("C:\\Users\\abhil\\OneDrive\\Desktop\\key.xlsx");
+			fis = new FileInputStream(".//src/test/resources/key.xlsx");
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
