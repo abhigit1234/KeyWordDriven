@@ -69,14 +69,22 @@ public class EngineKey {
 				}				
 				break;
 			case "quit":
-				if (Action.equals("quit")) {
-					try {
+				 if (Action.equals("quit")) {	
+				try {
 						Thread.sleep(3000);
 					} catch (InterruptedException e) {}
 					driver.quit();
-				} else {
-					driver.close();
-				}
+				 }
+			break;
+			
+			case "close":
+			 if (Action.equals("close")) {
+				 try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {}
+				
+				 driver.close();
+			}
 			case "getNumOfPages":
 				if(Action.equals("getNumOfPages")) {
 					String text =	element.getText();
@@ -85,10 +93,6 @@ public class EngineKey {
 				}
 					
 				break;
-			
-				 
-				
-				
 			default:
 				break;
 			}
@@ -99,6 +103,9 @@ public class EngineKey {
 				if (Action.equals("sendkeys")) {
 					element.sendKeys(Value);
 				} else if (Action.equals("click")) {
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {}
 					element.click();
 				} else if (Action.equals("isDisplayed")) {
 					System.out.println(element.isDisplayed());
@@ -117,7 +124,7 @@ public class EngineKey {
 					element.sendKeys(Value);
 				} else if (Action.equals("click")) {
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(3000);
 					} catch (InterruptedException e) {}
 					element.click();
 				} else if (Action.equals("isDisplayed")) {
@@ -134,6 +141,9 @@ public class EngineKey {
 				if (Action.equals("sendkeys")) {
 					element.sendKeys(Value);
 				} else if (Action.equals("click")) {
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {}
 					element.click();
 				} else if (Action.equals("isDisplayed")) {
 					System.out.println(element.isDisplayed());
@@ -147,6 +157,9 @@ public class EngineKey {
 				for (WebElement list : elements) {
 					System.out.println(list.getText());
 					if (list.equals(Value)) {
+						try {
+							Thread.sleep(3000);
+						} catch (InterruptedException e) {}
 						list.click();
 					}else if (Action.equals("getTitle")) {
 						System.out.println(driver.getTitle());
